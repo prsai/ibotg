@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# ibotg  IRC bot to Telegram: a bot that allows using Telegram from IRC
+# launcher script for telegram-cli (this file under public domain)
+
+# Telegram executable path
+# installed in your home
+TG_PATH=~/tg/bin
+# installed in the system
+#TG_PATH=/usr/bin
+
+# Telegram server public key path
+# installed in your home
+PUB_PATH=~/tg
+# installed in the system
+#PUB_PATH=/etc/telegram-cli
+
+# Set 1 to enable initial pending messages at your own risk
+# it's recommended you use telegram-cli's history command instead
+PENDING_MSGS=0
+
+if [ $PENDING_MSGS = 0 ]; then rm -f ~/.telegram-cli/state; fi
+exec $TG_PATH/telegram-cli -C -R -W -k $PUB_PATH/tg-server.pub -s wrapper.lua

@@ -1,0 +1,48 @@
+# add new Lua callback on_msg_history(msg) to telegram-cli
+# this file under GNU General Public License (GPL) v2 or later
+--- interface.c.old	2015-01-25 01:44:17.777068502 +0100
++++ interface.c	2015-01-25 20:46:59.149255249 +0100
+@@ -1529,6 +1529,9 @@
+   mprint_start (ev);
+   int i;
+   for (i = num - 1; i >= 0; i--) {
++    #ifdef USE_LUA
++      lua_list_msg (ML[i]);
++    #endif
+     print_message (ev, ML[i]);
+   }
+   mprint_end (ev);
+--- lua-tg.c.old	2015-01-17 15:31:02.000000000 +0100
++++ lua-tg.c	2015-01-25 20:47:31.227770632 +0100
+@@ -401,6 +401,21 @@
+   }
+ }
+ 
++void lua_list_msg (struct tgl_message *M) {
++  if (!have_file) { return; }
++  lua_settop (luaState, 0);
++  //lua_checkstack (luaState, 20);
++  my_lua_checkstack (luaState, 20);
++  lua_getglobal (luaState, "on_msg_history");
++  push_message (M);
++  assert (lua_gettop (luaState) == 2);
++
++  int r = lua_pcall (luaState, 1, 0, 0);
++  if (r) {
++    logprintf ("lua: %s\n",  lua_tostring (luaState, -1));
++  }
++}
++
+ void lua_secret_chat_update (struct tgl_secret_chat *C, unsigned flags) {
+   if (!have_file) { return; }
+   lua_settop (luaState, 0);
+--- lua-tg.h.old	2015-01-17 15:31:02.000000000 +0100
++++ lua-tg.h	2015-01-25 20:47:58.356515091 +0100
+@@ -24,6 +24,7 @@
+ 
+ void lua_init (const char *file);
+ void lua_new_msg (struct tgl_message *M);
++void lua_list_msg (struct tgl_message *M);
+ void lua_our_id (int id);
+ void lua_secret_chat_update (struct tgl_secret_chat *U, unsigned flags);
+ void lua_user_update (struct tgl_user *U, unsigned flags);

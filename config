@@ -1,0 +1,38 @@
+# ibotg  IRC bot to Telegram: a bot that allows using Telegram from IRC
+# config file (this file under public domain)
+
+# IRC server
+serv=localhost
+
+# IRC port
+port=6667
+
+# IRC server-level password (blank for none)
+pass=
+
+# IRC channel prefix
+prefix=#
+
+# nick for root user (control user for telegram-cli) 
+root=root
+
+# nick for master user (user allowed to send/receive message to/from telegram)
+master=prsai
+
+# Your name on Telegram (spaces replaced by underscore "_")
+tg_name=John_Wayne
+
+# 1: see echo when you send messages, 0: hide echo (will be shown only from root)
+tg_echo=0
+
+# script that launches telegram-cli
+bintg=./tg
+
+# file containing contact list
+contact_file=contact_list
+
+# Time delay (ms) for lines sent to IRC, increase if you have flood problems 
+delay_line=50
+
+# Time delay (ms) for users joining channels, increase if there are problems
+delay_join=100

@@ -1,0 +1,168 @@
+#!/usr/bin/tclsh
+
+# ibotg  IRC bot to Telegram: a bot that allows using Telegram from IRC
+# Copyright (C) 2015 E. Bosch
+
+# MIT/X11 License
+
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including   
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+package require picoirc
+
+proc leer_conf { co } \
+{
+   upvar 1 $co conf
+
+   # configuration file key=value
+   # loaded in array co
+
+   set cf [ open config ]
+   while { [ gets $cf lin ] >= 0 } \
+   {
+      if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
+      set lconf [ split $lin = ]
+      lassign $lconf key val
+      set conf([ string trim $key]) [ string trim $val ]
+   }
+}
+
+proc leer_lista { flista nc2nl nl2nc canales } \
+{
+   upvar 1 $nc2nl c2l   $nl2nc l2c   $canales chans
+
+   # nc2nl -> array de nick corto a nick largo
+   # nl2nl -> array de nick largo a nick corto
+   # canales -> array lista de canales de cada nick corto (sin prefijo)
+
+   set li [ open $flista ]
+   while { [ gets $li lin ] >= 0 } \
+   {
+      if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
+      set cuatro [ split $lin : ]
+      lassign $cuatro nc nl id grupos
+      if { $grupos == "" } { continue }
+      set c2l($nc) $nl
+      set l2c($nl) $nc
+      set l2c($id) $nc
+      set chans($nc) [ split $grupos , ]
+   }
+}
+
+proc parse { string hora to from mensaje tg_name tg_echo } \
+{
+   upvar 1 $hora ho   $to t   $from f   $mensaje msg
+
+   set items [ split $string "\x1E" ]
+   lassign $items id hi ho f t msg 
+   if { $id!="9ZxtQy" } \
+   {
+      if { [ regexp -lineanchor {^\[[^]]+\] .*$} $string ] } { return 2 } \
+      else { return 0 }
+   }
+   if { $f==$tg_name && !$hi && !$tg_echo } { return 0 }
+   return 1
+}
+
+proc tg2irc { tg ir nl2nc pr master root tg_name tg_echo delay } \
+{
+   upvar 1 $ir irc   $nl2nc l2c
+
+   gets $tg linea
+   after $delay
+   if { $linea<0 } \
+   {
+      if { [ eof $tg ] } { exit }
+   } else \
+   {
+      set res [ parse $linea hora to from mensaje $tg_name $tg_echo ]
+      if { $res==1 } \
+      {
+         if { $to!=$tg_name } { set target $pr$to } \
+         else { set target $master }
+         picoirc::post $irc($l2c($from)) $target $mensaje
+      } \
+      elseif { $res==0 } { picoirc::post $irc($root) $master $linea }
+   }
+}
+
+proc irc2tg { irc estado args } \
+{
+   upvar #0 tg tp   ncirc nci   nc2nl c2l   canales chans   co conf   njd noj
+   set pr $conf(prefix)
+   set mast $conf(master)
+   set r00t $conf(root)
+
+   switch -exact -- $estado \
+   {
+      "debug" \
+      {
+         lassign $args tipo mensaje
+         if { $noj($irc) && \
+              $tipo=="read" && \
+              [ string first MOTD $mensaje ] != -1 \
+            } \
+            {  
+               foreach chan $chans($nci($irc)) { picoirc::post $irc "" "/join $pr$chan" }
+               set noj($irc) 0
+            }
+      }
+      "chat" \
+      {
+         lassign $args target sender mensaje tipo
+
+         # $nci($irc) -> nick de la conexion (destino)
+         # sender -> nick remitente
+         # target -> nick destino (privado) o canal
+
+         set pre   [ string index $target 0 ]
+         set grupo [ string range $target 1 end ]
+         if { $sender==$mast } \
+         {
+            if { $nci($irc)==$r00t } \
+            { 
+              if { $pre==$pr }             { puts $tp "msg $grupo $mensaje" } \
+              elseif { $target==$r00t }    { puts $tp $mensaje }
+            } \
+            elseif { $nci($irc)==$target } { puts $tp "msg $c2l($target) $mensaje" }	
+         }
+      }
+      "close" { exit }
+   }
+}
+
+array set co {}
+
+leer_conf co
+
+leer_lista $co(contact_file) nc2nl nl2nc canales
+
+foreach ni [ array names nc2nl ] \
+{
+   set irc($ni) [ picoirc::connect irc2tg $ni $co(pass) "irc://$co(serv):$co(port)" ] 
+   set ncirc($irc($ni)) $ni
+   set njd($irc($ni)) 1
+   after $co(delay_join)
+}
+
+set tg [ open |$co(bintg) w+ ]
+fconfigure $tg -blocking 0 -buffering line -encoding utf-8
+fileevent $tg readable { tg2irc $tg irc nl2nc $co(prefix) $co(master) $co(root) $co(tg_name) $co(tg_echo) $co(delay_line) }
+
+vwait forever
