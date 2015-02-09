@@ -26,26 +26,11 @@
 
 
 function on_msg_receive(msg)
-  local sep = "\x1E"
-  for linea in string.gmatch(msg.text,"[^\n]+")
-  do
-    for i in partir(linea)
-    do
-      print("9ZxtQy"..sep.."0"..sep..msg.date..sep..msg.from.print_name..sep..msg.to.print_name..sep..i)
-    end
-  end
+  handle_msg(msg,"0")
 end
 
 function on_msg_history(msg)
-  local sep = "\x1E"
-  local fecha = os.date("[%d %H:%M]",msg.date)
-  for linea in string.gmatch(msg.text,"[^\n]+")
-  do
-    for i in partir(linea)
-    do
-      print("9ZxtQy"..sep.."1"..sep..msg.date..sep..msg.from.print_name..sep..msg.to.print_name..sep..fecha.." "..i)
-    end
-  end
+  handle_msg(msg,"1")
 end
 
 function on_our_id (id)
@@ -72,5 +57,20 @@ function partir(x)
   return function ()
     n = n + 425
     if n<l then return string.sub(x,n+1,425+n) end
+  end
+end
+
+function handle_msg(msg,hist)
+  local sep = "\x1E"
+  local fecha
+  local text
+  if msg.text==nil then text="["..msg.media.type.."]" else text=msg.text end
+  if hist=="1" then fecha = os.date("[%d %H:%M]",msg.date).." " else fecha = "" end
+  for linea in string.gmatch(text,"[^\n]+")
+  do
+    for i in partir(linea)
+    do
+      print("9ZxtQy"..sep..hist..sep..msg.date..sep..msg.from.print_name..sep..msg.to.print_name..sep..fecha..i)
+    end
   end
 end
