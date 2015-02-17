@@ -7,7 +7,7 @@ IRC bot to Telegram: a bot that allows using Telegram from IRC
 Description
 -----------
 
-ibotg acts as gateway between IRC and Telegram chat/messaging system.
+ibotg acts as a gateway between IRC and Telegram chat/messaging network.
 
 It works connecting to a Telegram account and mapping every contact and
 group on Telegram to a user and channel on a IRC server.
@@ -67,7 +67,7 @@ There are two special contacts in botg that must be present in contact list:
   user (see Running section).
 
 Another file you should adapt to your system is "tg", this is the script
-ibotg uses to lauch telegram-cli with all the necessary options, you can
+ibotg uses to launch telegram-cli with all the necessary options, you can
 change variables TG_PATH with the path to the telegram-cli executable and
 PUB_PATH with the path to the Telegram publick key file "tg-server.pub".
 
