@@ -137,6 +137,10 @@ ToDo
   a public ftp/http location, passes the filename to ibotg that constructs
   the URL and shows it.
 
+* Make contact list dynamic/live.
+
+* Address some synchronization problems.
+
 License
 -------
 
