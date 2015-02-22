@@ -107,7 +107,7 @@ Notes
 -----
 
 * SSL on conections to IRC is not supported (a limitation from picoirc
-  library), if you run a private IRC server I suggest you run ibotg in the
+  library), if you run a private IRC server I suggest you run ibotg on the
   same host (serv=localhost). If you need SSL you can deploy a tunnel or
   bouncer/proxy like stunnel or znc.
   Connection to Telegram is handled by telegram-cli so is secured by
@@ -117,12 +117,9 @@ Notes
   like being rejected/banned due to antibot policies, limit of number of
   connections, and/or antiflood measures. Also the nicks/channels created
   by the bot can collide with existing ones on IRC and/or can be registered
-  by other users (ibotg doesn't support nick bots like "NickServ"), finally
-  public servers can arise some privacy concerns; for all these reasons I
-  recommend running your own private IRC server.
-
-* Media text labels (ex. "[photo]") are not supported at all at the moment,
-  see ToDo section.
+  by other users (at the moment ibotg doesn't support nick bots like
+  "NickServ"), finally public servers can arise some privacy concerns; for
+  all these reasons I recommend running your own private IRC server.
 
 * Initial pending messages are causing some problems to ibotg so they are
   disabled by default instead I recommend you use history command from
