@@ -52,11 +52,12 @@ function on_binlog_replay_end ()
 end
 
 function partir(x)
-  local n = -425
+  local m = 425
+  local n = -m
   local l = string.len(x)
   return function ()
-    n = n + 425
-    if n<l then return string.sub(x,n+1,425+n) end
+    n = n + m
+    if n<l then return string.sub(x,n+1,m+n) end
   end
 end
 
