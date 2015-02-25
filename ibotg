@@ -67,12 +67,14 @@ proc leer_lista { flista nc2nl nl2nc canales } \
 
 proc parse { string hora to from mensaje tg_name tg_echo } \
 {
+   upvar #0 last lt
    upvar 1 $hora ho   $to t   $from f   $mensaje msg
 
    set items [ split $string "\x1E" ]
    lassign $items id hi ho f t msg 
    if { $id!="9ZxtQy" } \
    {
+      if { $lt } { comm_last $string 2 }
       if { [ regexp -lineanchor {^\[[^]]+\] .*$} $string ] } { return 2 } \
       else { return 0 }
    }
@@ -138,7 +140,11 @@ proc irc2tg { irc estado args } \
             if { $nci($irc)==$r00t } \
             { 
               if { $pre==$pr }             { puts $tp "msg $grupo $mensaje" } \
-              elseif { $target==$r00t }    { puts $tp $mensaje }
+              elseif { $target==$r00t } \
+              {
+                if { [ string index $mensaje 0 ] == "!" } { command $mensaje } \
+                else { puts $tp $mensaje }
+              }
             } \
             elseif { $nci($irc)==$target } { puts $tp "msg $c2l($target) $mensaje" }	
          }
@@ -147,6 +153,41 @@ proc irc2tg { irc estado args } \
    }
 }
 
+proc command { com } \
+{
+   set lc [ split $com ]
+   set c0 [ lindex $lc 0 ]
+   switch -exact -- $c0 \
+   {
+      "!last" { comm_last $lc 1 }
+   }
+}
+
+proc comm_last { line fase } \
+{
+   upvar #0 tg tp   last lt   arg ar
+
+   if { $fase==1 } \
+   {   
+      set lt 1
+      set ar [ lsearch -inline -start 1 -not $line {} ]
+      puts $tp dialog_list
+   } \
+   elseif { $fase==2 } \
+   {
+      if { [ regexp -lineanchor "^Chat $ar: (\[0-9\]+) unread$" $line -> msgs ] } \
+      {
+         set lt 0
+         set msgs [ expr $msgs + 5 ]
+         puts $tp "history $ar $msgs"
+      }
+
+   }   
+}
+
+
+set last 0
+set arg ""
 array set co {}
 
 leer_conf co
