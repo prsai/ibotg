@@ -165,7 +165,7 @@ proc command { com } \
 
 proc comm_last { line fase } \
 {
-   upvar #0 tg tp   last lt   arg ar
+   upvar #0 tg tp   last lt   arg ar   nc2nl c2l
 
    if { $fase==1 } \
    {   
@@ -175,13 +175,18 @@ proc comm_last { line fase } \
    } \
    elseif { $fase==2 } \
    {
-      if { [ regexp -lineanchor "^Chat $ar: (\[0-9\]+) unread$" $line -> msgs ] } \
+      if { [ info exists c2l($ar) ] } \
+      {
+         set arl_ $c2l($ar)
+         set arl [ string map { _ " " } $arl_ ]
+      } \
+      else { set arl_ [ set arl $ar ] }         
+      if { [ regexp -lineanchor "^(Chat|User) $arl: (\[0-9\]+) unread$" $line - -> msgs ] } \
       {
          set lt 0
          set msgs [ expr $msgs + 5 ]
-         puts $tp "history $ar $msgs"
+         puts $tp "history $arl_ $msgs"
       }
-
    }   
 }
 
