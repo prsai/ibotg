@@ -86,9 +86,9 @@ proc tg2irc { tg ir nl2nc pr master root tg_name tg_echo delay } \
 {
    upvar 1 $ir irc   $nl2nc l2c
 
-   gets $tg linea
+   set c [ gets $tg linea ]
    after $delay
-   if { $linea<0 } \
+   if { $c<0 } \
    {
       if { [ eof $tg ] } { exit }
    } else \
