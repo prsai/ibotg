@@ -106,9 +106,9 @@ window in your IRC client.
 Notes
 -----
 
-* SSL on conections to IRC is not supported (a limitation from picoirc
+* TLS/SSL conections to IRC are not supported (a limitation from picoirc
   library), if you run a private IRC server I suggest you run ibotg on the
-  same host (serv=localhost). If you need SSL you can deploy a tunnel or
+  same host (serv=localhost). If you need TLS/SSL you can deploy a tunnel or
   bouncer/proxy like stunnel or znc.
   Connection to Telegram is handled by telegram-cli so is secured by
   MTProto.
