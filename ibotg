@@ -55,12 +55,11 @@ proc leer_lista { flista nc2nl nl2nc canales } \
    while { [ gets $li lin ] >= 0 } \
    {
       if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
-      set cuatro [ split $lin : ]
-      lassign $cuatro nc nl id grupos
+      set trio [ split $lin : ]
+      lassign $trio nc nl grupos
       if { $grupos == "" } { continue }
       set c2l($nc) $nl
       set l2c($nl) $nc
-      set l2c($id) $nc
       set chans($nc) [ split $grupos , ]
    }
 }

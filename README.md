@@ -36,13 +36,11 @@ some users can be in a group talking with its members without having them as
 contacts, so the ibotg needs a text file (by default "contact_list")
 containing the contact list in the following format:
 
-    ircnick:telegram_name:user#id:groups
+    ircnick:telegram_name:groups
 
 * ircnick: the nick shown in IRC (normally max 9 characters, no spaces).
 * telegram_name: the name of the contact as appears on Telegram (spaces
-  replaced by underscores "_") [optional if user#id is set].
-* user#id: the string "user#" followed by numerical user ID in Telegram
-  (not phone number) [optional if telegram_name is set].
+  replaced by underscores "_").
 * groups: comma separated list of Telegram groups where the contact is,
   these groups should be renamed in telegram-cli to not contain spaces,
   these names will be the channel names in IRC with prefix (ex.  "#") added
@@ -50,17 +48,17 @@ containing the contact list in the following format:
 
 Examples:
 
-    prsai:John_Wayne:user#6666666:farwest,saloon
-    prsai:John_Wayne::farwest,saloon
-    prsai::user#6666666:farwest,saloon
+    root::farwest,saloon
+    echo:Your_name:farwest,saloon
+    prsai:John_Wayne:farwest,saloon
 
 There are two special contacts in botg that must be present in contact list:
 
 * root user: internal control user managed by ibotg that has two functions:
   receive message from a channel and pass messages directly from/to
   telegram-cli. This contact has no presence in Telegram network so the
-  telegram_name and user#id can be empty. It must be in all channels where
-  there is a real contact.
+  telegram_name should be empty. It must be in all channels where there is
+  a real contact.
 
 * echo user: it's your user on Telegram that must be mapped in IRC for echo
   messages (if enabled) and history logs, it must be different from master
