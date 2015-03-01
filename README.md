@@ -103,6 +103,16 @@ non-message output from telegram-cli to master user and will forward
 commands to telegram-cli, I suggest you keep the root user in a separated
 window in your IRC client.
 
+Some special commands can be sent to this control user (root) prefixed with
+exclamation mark (!). At the moment the only command available is:
+
+    !last <user|channel>
+
+This will produce a dump of messages from history according to the number of
+unread messages reported by "dialog_list" command from telegram-cli. You can
+reset the unread message count with telegram-cli command "mark_read
+<contact|channel>".
+
 Notes
 -----
 
