@@ -33,8 +33,8 @@ directives are in the format key=value.
 
 By now ibotg cannot retrieve the contact list from telegram-cli, in fact
 some users can be in a group talking with its members without having them as
-contacts, so the ibotg needs a text file (by default "contact_list")
-containing the contact list in the following format:
+contacts, so ibotg needs a text file (by default "contact_list") containing
+the contact list in the following format:
 
     ircnick:telegram_name:groups
 
