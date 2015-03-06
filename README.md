@@ -12,7 +12,8 @@ ibotg acts as a gateway between IRC and Telegram chat/messaging network.
 It works connecting to a Telegram account and mapping every contact and
 group on Telegram to a user and channel on a IRC server.
 
-ibotg is written in Tcl with a small Lua wrapper to telegram-cli.
+ibotg is written in Tcl with a small Lua wrapper to telegram-cli 
+(https://github.com/vysheng/tg).
 
 Requirements
 -------------
@@ -139,8 +140,8 @@ ToDo
 ----
 
 * Support for media: one aproach would be telegram-cli saves every media to
-  a public ftp/http location, passes the filename to ibotg that constructs
-  the URL and shows it.
+  a local folder shared/synced with ftp/http/gopher/S3/etc., passes the
+  filename to ibotg that constructs the URL and shows it.
 
 * Make contact list dynamic/live.
 
