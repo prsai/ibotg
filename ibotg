@@ -138,12 +138,12 @@ proc irc2tg { irc estado args } \
          {
             if { $nci($irc)==$r00t } \
             { 
-              if { $pre==$pr }             { puts $tp "msg $grupo $mensaje" } \
-              elseif { $target==$r00t } \
-              {
-                if { [ string index $mensaje 0 ] == "!" } { command $mensaje } \
-                else { puts $tp $mensaje }
-              }
+               if { $pre==$pr }             { puts $tp "msg $grupo $mensaje" } \
+               elseif { $target==$r00t } \
+               {
+                  if { [ string index $mensaje 0 ] == "!" } { command $mensaje } \
+                  else { puts $tp $mensaje }
+               }
             } \
             elseif { $nci($irc)==$target } { puts $tp "msg $c2l($target) $mensaje" }	
          }
