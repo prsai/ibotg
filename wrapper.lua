@@ -65,7 +65,7 @@ function handle_msg(msg,hist)
   local sep = "\x1E"
   local fecha
   local text
-  if msg.text==nil then text="["..msg.media.type.."]" else text=msg.text end
+  if msg.text==nil then text = "["..msg.media.type.."]" else text = msg.text end
   if hist=="1" then fecha = os.date("[%d %H:%M]",msg.date).." " else fecha = "" end
   for linea in string.gmatch(text,"[^\n]+")
   do
