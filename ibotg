@@ -64,7 +64,7 @@ proc leer_lista { flista nc2nl nl2nc canales } \
    }
 }
 
-proc parse { string hora to from mensaje tg_name tg_echo } \
+proc parse { string hora to from mensaje tg_name tg_echo base media } \
 {
    upvar #0 last lt
    upvar 1 $hora ho   $to t   $from f   $mensaje msg
@@ -73,6 +73,15 @@ proc parse { string hora to from mensaje tg_name tg_echo } \
    lassign $items id hi ho f t msg 
    if { $id!="9ZxtQy" } \
    {
+      if { $id=="3kdy5F" } \
+      { 
+         set t $tg_name
+         set f $media
+         set m $msg
+         set msg ""
+         append msg {[} $hi {] } $base [ string range $m [ string last / $m ] end ]
+         return 1
+      }
       if { $lt } { comm_last $string 2 }
       if { [ regexp -lineanchor {^\[[^]]+\] .*$} $string ] } { return 2 } \
       else { return 0 }
@@ -81,7 +90,7 @@ proc parse { string hora to from mensaje tg_name tg_echo } \
    return 1
 }
 
-proc tg2irc { tg ir nl2nc pr master root tg_name tg_echo delay } \
+proc tg2irc { tg ir nl2nc pr master root tg_name tg_echo delay base media } \
 {
    upvar 1 $ir irc   $nl2nc l2c
 
@@ -92,7 +101,7 @@ proc tg2irc { tg ir nl2nc pr master root tg_name tg_echo delay } \
       if { [ eof $tg ] } { exit }
    } else \
    {
-      set res [ parse $linea hora to from mensaje $tg_name $tg_echo ]
+      set res [ parse $linea hora to from mensaje $tg_name $tg_echo $base $media ]
       if { $res==1 } \
       {
          if { $to!=$tg_name } { set target $pr$to } \
@@ -208,6 +217,7 @@ foreach ni [ array names nc2nl ] \
 
 set tg [ open |$co(bintg) w+ ]
 fconfigure $tg -blocking 0 -buffering line -encoding utf-8
-fileevent $tg readable { tg2irc $tg irc nl2nc $co(prefix) $co(master) $co(root) $co(tg_name) $co(tg_echo) $co(delay_line) }
+fileevent $tg readable { tg2irc $tg irc nl2nc $co(prefix) $co(master) $co(root) $co(tg_name) \
+                                $co(tg_echo) $co(delay_line) $co(media_base) $co(media) }
 
 vwait forever

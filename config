@@ -36,3 +36,9 @@ delay_line=50
 
 # Time delay (ms) for users joining channels, increase if there are problems
 delay_join=100
+
+# Media URL base
+media_base=http://www.example.com/files
+
+# nick for media user (user that shows media URLs on IRC)
+media=media
