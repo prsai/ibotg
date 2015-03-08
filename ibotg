@@ -66,20 +66,28 @@ proc leer_lista { flista nc2nl nl2nc canales } \
 
 proc parse { string hora to from mensaje tg_name tg_echo base media } \
 {
-   upvar #0 last lt
+   upvar #0 last lt   mpend pend
    upvar 1 $hora ho   $to t   $from f   $mensaje msg
 
    set items [ split $string "\x1E" ]
-   lassign $items id hi ho f t msg 
+   lassign $items id mi hi ho f t msg
    if { $id!="9ZxtQy" } \
    {
       if { $id=="3kdy5F" } \
-      { 
-         set t $tg_name
-         set f $media
-         set m $msg
-         set msg ""
-         append msg {[} $hi {] } $base [ string range $m [ string last / $m ] end ]
+      {
+         append url $base [ string range $msg [ string last / $msg ] end ]
+         if { [ info exists pend($mi) ] } \
+         {
+            lassign $pend($mi) f t m
+            unset pend($mi)
+            append m " " $url
+         } else \
+         {
+            set t $tg_name
+            set f $media
+            append m {[} $mi {] } $url
+         }
+         set msg $m
          return 1
       }
       if { $lt } { comm_last $string 2 }
@@ -87,6 +95,7 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
       else { return 0 }
    }
    if { $f==$tg_name && !$hi && !$tg_echo } { return 0 }
+   if { $mi>0 && !$hi } { set pend($mi) [ list $f $t $msg ]; return 0 }
    return 1
 }
 
@@ -202,6 +211,7 @@ proc comm_last { line fase } \
 set last 0
 set arg ""
 array set co {}
+array set mpend {}
 
 leer_conf co
 

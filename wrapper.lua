@@ -52,11 +52,11 @@ function on_binlog_replay_end ()
 end
 
 do
-  local mid = 0
+  local mid = 1
 
   function ok_load(extra, success, result)
     local sep = "\x1E"
-    print("3kdy5F"..sep..mid..sep..sep..sep..sep..result)
+    print("3kdy5F"..sep..mid..sep..sep..sep..sep..sep..result)
     mid = mid + 1
   end
 end
@@ -72,28 +72,30 @@ function partir(x)
 end
 
 do
-  local mid = 0
+  local mid = 1
 
   function handle_msg(msg,hist)
     local sep = "\x1E"
     local fecha
     local text
+    local mit = 0
     if msg.text==nil and msg.media.type~=nil then 
       text = "["..msg.media.type.."]"
       if msg.media.type=="photo" then 
         load_photo(msg.id,ok_load,false)
         text = text.."["..mid.."]"
+        mit = mid
         mid = mid + 1
       end
     else 
-      text = msg.text 
+      text = msg.text
     end
     if hist=="1" then fecha = os.date("[%d %H:%M]",msg.date).." " else fecha = "" end
     for linea in string.gmatch(text,"[^\n]+")
     do
       for i in partir(linea)
       do
-        print("9ZxtQy"..sep..hist..sep..msg.date..sep..msg.from.print_name..sep..msg.to.print_name..sep..fecha..i)
+        print("9ZxtQy"..sep..mit..sep..hist..sep..msg.date..sep..msg.from.print_name..sep..msg.to.print_name..sep..fecha..i)
       end
     end
   end
