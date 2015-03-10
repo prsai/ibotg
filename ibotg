@@ -43,7 +43,7 @@ proc leer_conf { co } \
    }
 }
 
-proc leer_lista { flista nc2nl nl2nc canales } \
+proc leer_lista { flista nc2nl nl2nc canales media } \
 {
    upvar 1 $nc2nl c2l   $nl2nc l2c   $canales chans
 
@@ -57,7 +57,7 @@ proc leer_lista { flista nc2nl nl2nc canales } \
       if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
       set trio [ split $lin : ]
       lassign $trio nc nl grupos
-      if { $grupos == "" } { continue }
+      if { $grupos=="" && $nc!=$media } { continue }
       set c2l($nc) $nl
       set l2c($nl) $nc
       set chans($nc) [ split $grupos , ]
@@ -215,7 +215,7 @@ array set mpend {}
 
 leer_conf co
 
-leer_lista $co(contact_file) nc2nl nl2nc canales
+leer_lista $co(contact_file) nc2nl nl2nc canales $co(media)
 
 foreach ni [ array names nc2nl ] \
 {
