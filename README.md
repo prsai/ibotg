@@ -27,7 +27,7 @@ Requirements
   connections from the same IP and there is not nick collision nor flood
   problems.
 * An IRC client.
-* Some means to access media files (see media support section).
+* Some means to access to the media files (see media support section).
 
 Configuration
 -------------
@@ -128,7 +128,7 @@ downloads local folder ($HOME/.telegram-cli/downloads) if you are running
 telegram-cli/ibotg on your PC you just have to open the files with your
 favourite image viewer. If you are running telegram-cli/ibotg on a server,
 you should share the downloads folder via http, ftp, gopher, NFS, CIFS or
-another protocol/service that allows you to access the files remotely.
+another protocol/service that allows you to access to the files remotely.
 
 As an alternative you can sync the files with rsync, S3, etc. so you can
 access them from other location.
