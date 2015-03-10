@@ -139,7 +139,8 @@ Notes
 ToDo
 ----
 
-* Support for media: one aproach would be telegram-cli saves every media to
+* **[Implemented in experimental [media branch](https://github.com/prsai/ibotg/tree/media)]**
+  Support for media: one aproach would be telegram-cli saves every media to
   a local folder shared/synced with ftp/http/gopher/S3/etc., passes the
   filename to ibotg that constructs the URL and shows it.
 
