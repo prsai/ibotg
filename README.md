@@ -4,6 +4,8 @@ ibotg
 
 IRC bot to Telegram: a bot that allows using Telegram from IRC
 
+**[ Experimental branch with media support ]**
+
 Description
 -----------
 
@@ -25,6 +27,7 @@ Requirements
   connections from the same IP and there is not nick collision nor flood
   problems.
 * An IRC client.
+* Some means to access media files (see media support section).
 
 Configuration
 -------------
@@ -51,6 +54,7 @@ Examples:
 
     root::farwest,saloon
     echo:Your_name:farwest,saloon
+    media:media:
     prsai:John_Wayne:farwest,saloon
 
 There are two special contacts in botg that must be present in contact list:
@@ -64,6 +68,10 @@ There are two special contacts in botg that must be present in contact list:
 * echo user: it's your user on Telegram that must be mapped in IRC for echo
   messages (if enabled) and history logs, it must be different from master
   user (see Running section).
+
+* media user: it's the user on IRC that shows media URLs for history messages,
+  as it's not possible to show the URLs inline as on regular messages. Both
+  ircnick and telegram_name must be the same.
 
 Another file you should adapt to your system is "tg", this is the script
 ibotg uses to launch telegram-cli with all the necessary options, you can
@@ -112,6 +120,24 @@ unread messages reported by "dialog_list" command from telegram-cli. You can
 reset the unread message count with telegram-cli command "mark_read
 <contact|channel>".
 
+Media support
+-------------
+
+Support only for photos (by now): telegram-cli saves every photo to the
+downloads local folder ($HOME/.telegram-cli/downloads) if you are running
+telegram-cli/ibotg on your PC you just have to open the files with your
+favourite image viewer. If you are running telegram-cli/ibotg on a server,
+you should share the downloads folder via http, ftp, gopher, NFS, CIFS or
+another protocol/service that allows you to access the files remotely.
+
+As an alternative you can sync the files with rsync, S3, etc. so you can
+access them from other location.
+
+In order to ease the operation, ibotg constructs the final URL according to
+a base URL and the filename reported by telegram-cli, regular messages show
+their URLs inline, the URLs in history messages are shown by the virtual
+user "media".
+
 Notes
 -----
 
@@ -138,10 +164,6 @@ Notes
 
 ToDo
 ----
-
-* Support for media: one aproach would be telegram-cli saves every media to
-  a local folder shared/synced with ftp/http/gopher/S3/etc., passes the
-  filename to ibotg that constructs the URL and shows it.
 
 * Make contact list dynamic/live.
 
