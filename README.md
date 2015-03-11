@@ -29,7 +29,7 @@ Requirements
 Configuration
 -------------
 
-For configuring ibotg complete the "config" file, it's self documented, the 
+For configuring ibotg complete the config file, it's self documented, the 
 directives are in the format key=value.
 
 By now ibotg cannot retrieve the contact list from telegram-cli, in fact
@@ -88,9 +88,11 @@ Then compile.
 Running
 -------
 
-Simply launch ibotg from its directory and keep it in background:
+Simply launch ibotg from its directory and keep it in background, you can
+provide an optional config file, if not "config" in the current directory
+will be used.
 
-    ./ibotg &
+    ./ibotg [config_file] &
 
 On IRC you will see all the contacts joining their channels, the user
 configured as master (normally the user you use with your IRC client) is

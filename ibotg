@@ -28,12 +28,14 @@ package require picoirc
 
 proc leer_conf { co } \
 {
+   upvar #0 argv arg   argc argn
    upvar 1 $co conf
 
    # configuration file key=value
    # loaded in array co
 
-   set cf [ open config ]
+   if { $argn==1 } { set config $arg } else { set config config }
+   set cf [ open $config ]
    while { [ gets $cf lin ] >= 0 } \
    {
       if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
