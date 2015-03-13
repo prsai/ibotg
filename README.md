@@ -17,6 +17,11 @@ group on Telegram to a user and channel on a IRC server.
 ibotg is written in Tcl with a small Lua wrapper to 
 [telegram-cli](https://github.com/vysheng/tg).
 
+Architecture
+------------
+
+See [diagram](https://raw.githubusercontent.com/prsai/ibotg/media/DIAGRAM).
+
 Requirements
 -------------
 
