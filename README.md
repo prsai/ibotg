@@ -181,7 +181,7 @@ Contact
 
 * Via [github project](https://github.com/prsai/ibotg).
 
-* #ibotg on irc.freenode.net
+* \#ibotg on irc.freenode.net
 
 License
 -------
