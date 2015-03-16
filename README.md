@@ -124,8 +124,8 @@ exclamation mark (!). At the moment the only command available is:
 
 This will produce a dump of messages from history according to the number of
 unread messages reported by "dialog_list" command from telegram-cli. You can
-reset the unread message count with telegram-cli command "mark_read
-<contact|channel>".
+reset the unread message count with telegram-cli command "`mark_read
+<contact|channel>`".
 
 Media support
 -------------
@@ -175,6 +175,13 @@ ToDo
 * Make contact list dynamic/live.
 
 * Address some synchronization problems.
+
+Contact
+-------
+
+* Via [github project](https://github.com/prsai/ibotg).
+
+* #ibotg on irc.freenode.net
 
 License
 -------
