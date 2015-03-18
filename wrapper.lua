@@ -66,8 +66,19 @@ function partir(x)
   local n = -m
   local l = string.len(x)
   return function ()
+    local j,z,tra="",""
     n = n + m
-    if n<l then return string.sub(x,n+1,m+n) end
+    if n<l then
+      tra = string.sub(x,n+1,m+n)
+      if l-n<m then return tra end   
+      for i in string.gmatch(tra,"[^ ]+")
+      do
+        j = j..z
+        z = i.." "
+      end
+      n = n - string.len(z)
+      return j
+    end
   end
 end
 
