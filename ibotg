@@ -80,6 +80,7 @@ proc parse { string hora to from mensaje tg_name tg_echo } \
       else { return 0 }
    }
    if { $f==$tg_name && !$hi && !$tg_echo } { return 0 }
+   if { [ string index $msg 0 ] == "/" } { append me " " $msg; set msg $me }
    return 1
 }
 
