@@ -58,17 +58,23 @@ the contact list in the following format:
 Examples:
 
     root::farwest,saloon
+    unknown::farwest,saloon
     echo:Your_name:farwest,saloon
     media:media:
     prsai:John_Wayne:farwest,saloon
 
-There are two special contacts in botg that must be present in contact list:
+There are four special contacts in botg that must be present in contact list:
 
 * root user: internal control user managed by ibotg that has two functions:
   receive message from a channel and pass messages directly from/to
   telegram-cli. This contact has no presence in Telegram network so the
   telegram_name should be empty. It must be in all channels where there is
   a real contact.
+
+* unknown user: it's the user on IRC that maps any Telegram user is not in 
+  the contact file (will show the Telegram name into brackets). This contact
+  has no presence in Telegram network so the telegram_name should be empty. 
+  It must be in all channels.
 
 * echo user: it's your user on Telegram that must be mapped in IRC for echo
   messages (if enabled) and history logs, it must be different from master
