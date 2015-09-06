@@ -100,7 +100,9 @@ proc tg2irc { tg ir nl2nc pr master root tg_name tg_echo delay } \
       {
          if { $to!=$tg_name } { set target $pr$to } \
          else { set target $master }
-         picoirc::post $irc($l2c($from)) $target $mensaje
+         if { [ info exists l2c($from) ] } { set usu $l2c($from) } \
+         else { set usu unknown; append me {[} $from {] } $mensaje; set mensaje $me }
+         picoirc::post $irc($usu) $target $mensaje
       } \
       elseif { $res==0 } { picoirc::post $irc($root) $master [ string range $linea 0 400 ] }
    }
