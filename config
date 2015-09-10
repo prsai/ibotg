@@ -36,3 +36,6 @@ delay_line=50
 
 # Time delay (ms) for users joining channels, increase if there are problems
 delay_join=100
+
+# Number of additional messages to show with "last" command
+last_add=5
