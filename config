@@ -42,3 +42,6 @@ media_base=http://www.example.com/files
 
 # nick for media user (user that shows media URLs on IRC)
 media=media
+
+# Number of additional messages to show with "last" command
+last_add=5

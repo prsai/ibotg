@@ -187,7 +187,7 @@ proc command { com } \
 
 proc comm_last { line fase } \
 {
-   upvar #0 tg tp   last lt   arg ar   nc2nl c2l
+   upvar #0 tg tp   last lt   arg ar   nc2nl c2l   co(last_add) add
 
    if { $fase==1 } \
    {   
@@ -206,7 +206,7 @@ proc comm_last { line fase } \
       if { [ regexp -lineanchor "^(Chat|User) $arl: (\[0-9\]+) unread$" $line - -> msgs ] } \
       {
          set lt 0
-         set msgs [ expr $msgs + 5 ]
+         set msgs [ expr $msgs + $add ]
          puts $tp "history $arl_ $msgs"
       }
    }   
