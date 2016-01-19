@@ -26,6 +26,8 @@
 
 package require picoirc
 
+proc ::picoirc::Version {context} { upvar #0 ncirc ni  nc2nl nl; return $nl($ni($context)) }
+
 proc leer_conf { co } \
 {
    upvar #0 argv arg   argc argn
