@@ -51,14 +51,11 @@ end
 function on_binlog_replay_end ()
 end
 
-do
-  local mid = 1
-
-  function ok_load(extra, success, result)
-    local sep = "\x1E"
-    print("3kdy5F"..sep..mid..sep..sep..sep..sep..sep..result)
-    mid = mid + 1
-  end
+function ok_load(mid, success, result)
+  local sep = "\x1E"
+  local text = "[ERROR]"
+  if success then text = result end
+  print("3kdy5F"..sep..mid..sep..sep..sep..sep..sep..text)
 end
 
 function partir(x)
@@ -90,13 +87,25 @@ do
     local fecha
     local text
     local mit = 0
-    if msg.text==nil and msg.media.type~=nil then 
-      text = "["..msg.media.type.."]"
-      if msg.media.type=="photo" then 
-        load_photo(msg.id,ok_load,false)
-        text = text.."["..mid.."]"
-        mit = mid
-        mid = mid + 1
+    local ind = 0
+    if msg.text==nil then
+      if msg.media~=nill and msg.media.type~=nil then 
+        text = "["..msg.media.type.."]"
+        if msg.media.type=="photo" then 
+          load_photo(msg.id,ok_load,mid)
+          ind = 1
+        end
+        if msg.media.type=="document" then
+          load_document(msg.id,ok_load,mid)
+          ind = 1
+        end
+        if ind==1 then
+          text = text.."["..mid.."]"
+          mit = mid
+          mid = mid + 1
+        end
+      else
+        return
       end
     else 
       text = msg.text
