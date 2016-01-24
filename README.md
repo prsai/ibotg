@@ -67,25 +67,27 @@ Examples:
     media:media:
     prsai:John_Wayne:#farwest,#saloon
 
-There are four special contacts in botg that must be present in contact list:
+There are four special contacts in ibotg that must be present in contact
+list:
 
 * root user: internal control user managed by ibotg that has two functions:
-  receive message from a channel and pass messages directly from/to
-  telegram-cli. This contact has no presence in Telegram network so the
-  telegram_name should be empty. It must be in all channels where there is
-  a real contact.
+  receive messages from a channel to forward them to Telegram and, via   
+  private messages, pass commands directly to telegram-cli and return its
+  output. This contact has no presence in Telegram network so the
+  telegram_name should be empty. It must be in all channels.
 
-* unknown user: it's the user on IRC that maps any Telegram user is not in 
-  the contact file (will show the Telegram name into brackets). This contact
-  has no presence in Telegram network so the telegram_name should be empty. 
-  It must be in all channels.
+* unknown user: it's the user on IRC that maps any Telegram user that is not
+  in the contact file (will show the Telegram name into brackets). This
+  contact has no presence in Telegram network so the telegram_name should be
+  empty. It must be in all channels.
 
 * echo user: it's your user on Telegram that must be mapped in IRC for echo
   messages (if enabled) and history logs, it must be different from master
   user (see Running section).
 
-* media user: it's the user on IRC that shows media URLs for history messages,
-  as it's not possible to show the URLs inline as on regular messages. Both
+* media user: it's the user on IRC that shows media URLs (see media support
+  section) for history messages (via private messages), as it's not possible
+  to show the URLs inline (by each contact) as on regular messages. Both
   ircnick and telegram_name must be the same.
 
 **channel list:**
@@ -183,16 +185,16 @@ Notes
 
 * If you run ibotg on public IRC server you may experience some problems
   like being rejected/banned due to antibot policies, limit of number of
-  connections, and/or antiflood measures. Also the nicks/channels created
-  by the bot can collide with existing ones on IRC and/or can be registered
-  by other users (at the moment ibotg doesn't support nick bots like
+  connections, and/or antiflood measures. Also the nicks/channels created by
+  the bot can collide with existing ones on IRC and/or can be registered by
+  other users (at the moment ibotg doesn't support nick bots like
   "NickServ"), finally public servers can arise some privacy concerns; for
   all these reasons I recommend running your own private IRC server.
 
 * Initial pending messages are causing some problems to ibotg so they are
-  disabled by default instead I recommend you use history command from
+  disabled by default, instead I recommend you use history command from
   telegram-cli (works only with an optional patch supplied, see Patching
-  section).  If you want to enable them at your own risk set PENDING_MSGS=1
+  section). If you want to enable them at your own risk set PENDING_MSGS=1
   in "tg" file.
 
 ToDo
