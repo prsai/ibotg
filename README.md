@@ -26,11 +26,10 @@ Requirements
 -------------
 
 * Tcl with picoirc library.
-* telegram-cli with an account configured (optional patch supplied to use
-  history function)
-* An IRC server, private recommended but can be public if it allows several
-  connections from the same IP and there is not nick collision nor flood
-  problems.
+* telegram-cli with an account configured (optionally from my fork to use
+  history function, see "Telegram-cli with history callbacks" section)
+* An IRC server, private recommended but can be public if it allows the
+  requeriments of ibotg (see Notes section)
 * An IRC client.
 * Some means to access to the media files (see media support section).
 
@@ -111,20 +110,14 @@ ibotg uses to launch telegram-cli with all the necessary options, you can
 change variables TG_PATH with the path to the telegram-cli executable and
 PUB_PATH with the path to the Telegram publick key file "tg-server.pub".
 
-Patching telegram-cli (optional)
---------------------------------
+Telegram-cli with history callbacks (optional)
+----------------------------------------------
 
-If you want to use the history function of telegram-cli in ibotg you must
-compile telegram-cli with a small modification following these instructions,
-if not you can skip this section and use a regular version of telegram-cli.
+If you want to use the history function of telegram-cli in ibotg (including
+"last" command, see Running section) you must use my own [fork of
+telegram-cli](https://github.com/prsai/tg) that adds history callbacks.
 
-Before compiling telegram-cli apply the patch from its directory (normally
-"tg" in your home), change "(ibotg directory)" with the path where you
-downloaded ibotg.
-
-    patch -p0 < (ibotg directory)/tgcli-lua_hist.patch
-
-Then compile.
+Follow the usual intructions to compile telegram-cli.
 
 Running
 -------
@@ -153,7 +146,8 @@ exclamation mark (!). At the moment the only command available is:
 This will produce a dump of messages from history according to the number of
 unread messages reported by "dialog_list" command from telegram-cli. You can
 reset the unread message count with telegram-cli command "`mark_read
-<contact|channel>`".
+<contact|channel>`". This only works if you use the forked version of 
+telegram-cli as said above.
 
 Media support
 -------------
