@@ -40,28 +40,32 @@ Configuration
 For configuring ibotg complete the config file, it's self documented, the 
 directives are in the format key=value.
 
-By now ibotg cannot retrieve the contact list from telegram-cli, in fact
-some users can be in a group talking with its members without having them as
-contacts, so ibotg needs a text file (by default "contact_list") containing
-the contact list in the following format:
+By now ibotg cannot retrieve the contact list nor group list from
+telegram-cli, in fact some users can be in a group talking with its members
+without having them as contacts, so ibotg needs two text files: one for the
+contact list and another for the group/channel list. The format of them is
+as follows:
 
-    ircnick:telegram_name:groups
+**contact list:**
+
+One line per contact with three data separated by colons:
+
+    ircnick:telegram_name:channels
 
 * ircnick: the nick shown in IRC (normally max 9 characters, no spaces).
 * telegram_name: the name of the contact as appears on Telegram (spaces
   replaced by underscores "_").
-* groups: comma separated list of Telegram groups where the contact is,
-  these groups should be renamed in telegram-cli to not contain spaces,
-  these names will be the channel names in IRC with prefix (ex.  "#") added
-  by ibotg.
+* channels: comma separated list of channels on IRC corresponding to
+  Telegram groups where the contact is, the name of the group on Telegram
+  will be defined in the group/channel list file.
 
 Examples:
 
-    root::farwest,saloon
-    unknown::farwest,saloon
-    echo:Your_name:farwest,saloon
+    root::#farwest,#saloon
+    unknown::#farwest,#saloon
+    echo:Your_name:#farwest,#saloon
     media:media:
-    prsai:John_Wayne:farwest,saloon
+    prsai:John_Wayne:#farwest,#saloon
 
 There are four special contacts in botg that must be present in contact list:
 
@@ -83,6 +87,22 @@ There are four special contacts in botg that must be present in contact list:
 * media user: it's the user on IRC that shows media URLs for history messages,
   as it's not possible to show the URLs inline as on regular messages. Both
   ircnick and telegram_name must be the same.
+
+**channel list:**
+
+One line per group/channel with two data separated by colon:
+
+    Group_name:#channel
+
+* Group_name: Name of the group as shown in Telegram (with spaces replaced
+  by underscores "_").
+* #channel: The name of the IRC channel when the corresponding group will be
+  mapped.
+
+Examples:
+
+    The_Far_West:#farwest
+    Western_Saloon:#saloon
 
 Another file you should adapt to your system is "tg", this is the script
 ibotg uses to launch telegram-cli with all the necessary options, you can
@@ -192,7 +212,7 @@ Contact
 License
 -------
 
-Copyright (C) 2015 E. Bosch
+Copyright (C) 2015,2016 E. Bosch
 
 MIT/X11 License
 

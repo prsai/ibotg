@@ -10,9 +10,6 @@ port=6667
 # IRC server-level password (blank for none)
 pass=
 
-# IRC channel prefix
-prefix=#
-
 # nick for root user (control user for telegram-cli) 
 root=root
 
@@ -30,6 +27,9 @@ bintg=./tg
 
 # file containing contact list
 contact_file=contact_list
+
+# file containing group/channel list
+channel_file=chan_list
 
 # Time delay (ms) for lines sent to IRC, increase if you have flood problems 
 delay_line=50

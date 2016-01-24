@@ -1,5 +1,5 @@
-root::farwest,saloon
-unknown::farwest,saloon
+root::#farwest,#saloon
+unknown::#farwest,#saloon
 media:media:
-echo:Your_name:farwest,saloon
-prsai:John_Wayne:farwest,saloon
+echo:Your_name:#farwest,#saloon
+prsai:John_Wayne:#farwest,#saloon
