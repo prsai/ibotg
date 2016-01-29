@@ -4,6 +4,9 @@ ibotg
 
 IRC bot to Telegram: a bot that allows using Telegram from IRC
 
+**[ Master branch is deprecated, use 
+[media branch](https://github.com/prsai/ibotg/tree/media) instead ]**
+
 Description
 -----------
 
