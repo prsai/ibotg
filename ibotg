@@ -65,10 +65,9 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc canales media } \
       if { $ch == 0 } \
       {
         lassign $data nc nl grupos
-        if { $grupos=="" && $nc!=$media } { continue }
         set c2l($nc) $nl
         set l2c($nl) $nc
-        set chans($nc) [ split $grupos , ]
+        if { $grupos!="" } { set chans($nc) [ split $grupos , ] }
       } \
       else \
       {
@@ -238,7 +237,7 @@ foreach ni [ array names nc2nl ] \
 {
    set irc($ni) [ picoirc::connect irc2tg $ni $co(pass) "irc://$co(serv):$co(port)" ] 
    set ncirc($irc($ni)) $ni
-   set njd($irc($ni)) 1
+   set njd($irc($ni)) [ info exists canales($ni) ]
    after $co(delay_join)
 }
 
