@@ -128,7 +128,7 @@ proc tg2irc { tg ir nl2nc gr2ch master root tg_name tg_echo delay base media } \
       set res [ parse $linea hora to from mensaje $tg_name $tg_echo $base $media ]
       if { $res==1 } \
       {
-         if { $to!=$tg_name } { set target $g2c($to) } \
+         if { [ array get g2c $to ] != "" } { set target $g2c($to) } \
          else { set target $master }
          if { [ info exists l2c($from) ] } { set usu $l2c($from) } \
          else { set usu unknown; append me {[} $from {] } $mensaje; set mensaje $me }
