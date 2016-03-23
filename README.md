@@ -57,7 +57,7 @@ One line per contact with four data separated by colons:
 * username: optional public username (also known as alias) that can be set
   in a Telegram account, in the form @username, al mentions in messages to
   these aliases will be replaced by the ircnick in the form ~ircnick~. If
-  you don't like this feature just left the username empty.
+  you don't like this feature just leave the username empty.
 * channels: comma separated list of channels on IRC corresponding to
   Telegram groups where the contact is, the name of the group on Telegram
   will be defined in the group/channel list file.
