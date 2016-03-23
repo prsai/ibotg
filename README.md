@@ -47,24 +47,28 @@ as follows:
 
 **contact list:**
 
-One line per contact with three data separated by colons:
+One line per contact with four data separated by colons:
 
-    ircnick:telegram_name:channels
+    ircnick:telegram_name:username:channels
 
 * ircnick: the nick shown in IRC (normally max 9 characters, no spaces).
 * telegram_name: the name of the contact as appears on Telegram (spaces
   replaced by underscores "_").
+* username: optional public username (also known as alias) that can be set
+  in a Telegram account, in the form @username, al mentions in messages to
+  these aliases will be replaced by the ircnick in the form ~ircnick~. If
+  you don't like this feature just left the username empty.
 * channels: comma separated list of channels on IRC corresponding to
   Telegram groups where the contact is, the name of the group on Telegram
   will be defined in the group/channel list file.
 
 Examples:
 
-    root::#farwest,#saloon
-    unknown::#farwest,#saloon
-    echo:Your_name:#farwest,#saloon
-    media:media:
-    prsai:John_Wayne:#farwest,#saloon
+    root:::#farwest,#saloon
+    unknown:::#farwest,#saloon
+    echo:Your_name:@your_alias:#farwest,#saloon
+    media:media::
+    prsai:John_Wayne:@Duke:#farwest,#saloon
 
 There are four special contacts in ibotg that must be present in contact
 list:
@@ -73,12 +77,12 @@ list:
   receive messages from a channel to forward them to Telegram and, via   
   private messages, pass commands directly to telegram-cli and return its
   output. This contact has no presence in Telegram network so the
-  telegram_name should be empty. It must be in all channels.
+  telegram_name and username should be empty. It must be in all channels.
 
 * unknown user: it's the user on IRC that maps any Telegram user that is not
   in the contact file (will show the Telegram name into brackets). This
-  contact has no presence in Telegram network so the telegram_name should be
-  empty. It must be in all channels.
+  contact has no presence in Telegram network so the telegram_name and
+  username should be empty. It must be in all channels.
 
 * echo user: it's your user on Telegram that must be mapped in IRC for echo
   messages (if enabled) and history logs, it must be different from master
@@ -87,7 +91,7 @@ list:
 * media user: it's the user on IRC that shows media URLs (see media support
   section) for history messages (via private messages), as it's not possible
   to show the URLs inline (by each contact) as on regular messages. Both
-  ircnick and telegram_name must be the same.
+  ircnick and telegram_name must be the same, username should be empty.
 
 **channel list:**
 

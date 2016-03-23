@@ -47,15 +47,16 @@ proc leer_conf { co } \
    }
 }
 
-proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc canales media } \
+proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales media } \
 {
-   upvar 1 $ch2gr c2g  $gr2ch g2c  $nc2nl c2l  $nl2nc l2c  $canales chans
+   upvar 1 $ch2gr c2g  $gr2ch g2c  $nc2nl c2l  $nl2nc l2c  $al2nc a2c  $canales chans
 
    # nc2nl -> array de nick corto a nick largo
    # nl2nl -> array de nick largo a nick corto
    # canales -> array lista de canales de cada nick corto (sin prefijo)
    # ch2gr -> array de canal en IRC a grupo en Telegram
    # gr2ch -> array de grupo en Telegram a canal en IRC
+   # al2nc -> array de alias en Telegram a nick corto
 
    set li [ open $flista ]
    while { [ gets $li lin ] >= 0 } \
@@ -64,9 +65,10 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc canales media } \
       set data [ split $lin : ]
       if { $ch == 0 } \
       {
-        lassign $data nc nl grupos
+        lassign $data nc nl al grupos
         set c2l($nc) $nl
         set l2c($nl) $nc
+        set a2c($al) ~$nc~
         if { $grupos!="" } { set chans($nc) [ split $grupos , ] }
       } \
       else \
@@ -114,9 +116,9 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
    return 1
 }
 
-proc tg2irc { tg ir nl2nc gr2ch master root tg_name tg_echo delay base media } \
+proc tg2irc { tg ir nl2nc gr2ch al2nc master root tg_name tg_echo delay base media } \
 {
-   upvar 1 $ir irc   $nl2nc l2c   $gr2ch g2c
+   upvar 1 $ir irc   $nl2nc l2c   $gr2ch g2c   $al2nc a2c
 
    set c [ gets $tg linea ]
    after $delay
@@ -128,6 +130,7 @@ proc tg2irc { tg ir nl2nc gr2ch master root tg_name tg_echo delay base media } \
       set res [ parse $linea hora to from mensaje $tg_name $tg_echo $base $media ]
       if { $res==1 } \
       {
+         set mensaje [ string map [ array get a2c ] $mensaje ]
          if { [ array get g2c $to ] != "" } { set target $g2c($to) } \
          else { set target $master }
          if { [ info exists l2c($from) ] } { set usu $l2c($from) } \
@@ -230,8 +233,8 @@ array set mpend {}
 
 leer_conf co
 
-leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc canales $co(media)
-leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc canales $co(media)
+leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc al2nc canales $co(media)
+leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc al2nc canales $co(media)
 
 foreach ni [ array names nc2nl ] \
 {
@@ -243,7 +246,7 @@ foreach ni [ array names nc2nl ] \
 
 set tg [ open |$co(bintg) w+ ]
 fconfigure $tg -blocking 0 -buffering line -encoding utf-8
-fileevent $tg readable { tg2irc $tg irc nl2nc gr2ch $co(master) $co(root) $co(tg_name) \
+fileevent $tg readable { tg2irc $tg irc nl2nc gr2ch al2nc $co(master) $co(root) $co(tg_name) \
                                 $co(tg_echo) $co(delay_line) $co(media_base) $co(media) }
 
 vwait forever
