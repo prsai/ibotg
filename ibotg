@@ -116,9 +116,9 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
    return 1
 }
 
-proc tg2irc { tg ir nl2nc gr2ch al2nc master root tg_name tg_echo delay base media } \
+proc tg2irc { tg ir nl2nc gr2ch al2nc emoji master root tg_name tg_echo delay base media } \
 {
-   upvar 1 $ir irc   $nl2nc l2c   $gr2ch g2c   $al2nc a2c
+   upvar 1 $ir irc   $nl2nc l2c   $gr2ch g2c   $al2nc a2c   $emoji emo
 
    set c [ gets $tg linea ]
    after $delay
@@ -131,6 +131,7 @@ proc tg2irc { tg ir nl2nc gr2ch al2nc master root tg_name tg_echo delay base med
       if { $res==1 } \
       {
          set mensaje [ string map [ array get a2c ] $mensaje ]
+         set mensaje [ string map [ array get emo ] $mensaje ]
          if { [ array get g2c $to ] != "" } { set target $g2c($to) } \
          else { set target $master }
          if { [ info exists l2c($from) ] } { set usu $l2c($from) } \
@@ -236,6 +237,8 @@ leer_conf co
 leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc al2nc canales $co(media)
 leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc al2nc canales $co(media)
 
+if { $co(convert_emoji) } { source emoji2emoticon.tcl }
+
 foreach ni [ array names nc2nl ] \
 {
    set irc($ni) [ picoirc::connect irc2tg $ni $co(pass) "irc://$co(serv):$co(port)" ] 
@@ -246,7 +249,7 @@ foreach ni [ array names nc2nl ] \
 
 set tg [ open |$co(bintg) w+ ]
 fconfigure $tg -blocking 0 -buffering line -encoding utf-8
-fileevent $tg readable { tg2irc $tg irc nl2nc gr2ch al2nc $co(master) $co(root) $co(tg_name) \
+fileevent $tg readable { tg2irc $tg irc nl2nc gr2ch al2nc emoji $co(master) $co(root) $co(tg_name) \
                                 $co(tg_echo) $co(delay_line) $co(media_base) $co(media) }
 
 vwait forever

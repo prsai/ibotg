@@ -45,3 +45,6 @@ media=media
 
 # Number of additional messages to show with "last" command
 last_add=5
+
+# 1: Convert UTF-8 emojis to ASCII emoticons, 0: don't convert
+convert_emoji=0
