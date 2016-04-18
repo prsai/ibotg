@@ -107,7 +107,7 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
          return 1
       }
       if { $lt } { comm_last $string 2 }
-      if { [ regexp -lineanchor {^\[[^]]+\] .*$} $string ] } { return 2 } \
+      if { [ regexp -lineanchor {^\s*\[[^]]+\] .*$} $string ] } { return 2 } \
       else { return 0 }
    }
    if { $f==$tg_name && !$hi && !$tg_echo } { return 0 }
