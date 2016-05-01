@@ -143,7 +143,7 @@ commands to telegram-cli, I suggest you keep the root user in a separated
 window in your IRC client.
 
 Some special commands can be sent to this control user (root) prefixed with
-exclamation mark (!). At the moment the only command available is:
+exclamation mark (!). At the moment only two commands are available:
 
     !last <user|channel>
 
@@ -152,6 +152,16 @@ unread messages reported by "dialog_list" command from telegram-cli. You can
 reset the unread message count with telegram-cli command "`mark_read
 <contact|channel>`". This only works if you use the forked version of 
 telegram-cli as said above.
+
+    !chcon <ircnick> <telegram_name> <username>
+
+For the contact refered by ircnick, change the telegram_name and
+username/alias. This is usefull when some contact changes its name in
+Telegram, it will be shown in ibotg as unknown until you set the new name
+with chcon, similarly the username/alias affects the conversion from
+@username to ~irnick~ forms. You must update the contact list file with the
+new telegram_name and/or username of the contact as well because the changes
+made with chcon will not be persistent if ibotg is restarted.
 
 Media support
 -------------

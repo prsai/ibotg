@@ -66,9 +66,7 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales media } \
       if { $ch == 0 } \
       {
         lassign $data nc nl al grupos
-        set c2l($nc) $nl
-        set l2c($nl) $nc
-        set a2c($al) ~$nc~
+        set_contact $nc $nl $al c2l l2c a2c
         if { $grupos!="" } { set chans($nc) [ split $grupos , ] }
       } \
       else \
@@ -78,6 +76,15 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales media } \
         set g2c($group) $chan
       }
    }
+}
+
+proc set_contact { nc nl al nc2nl nl2nc al2nc } \
+{
+   upvar 1 $nc2nl c2l  $nl2nc l2c  $al2nc a2c
+
+   set c2l($nc) $nl
+   set l2c($nl) $nc
+   set a2c($al) ~$nc~
 }
 
 proc parse { string hora to from mensaje tg_name tg_echo base media } \
@@ -196,6 +203,7 @@ proc command { com } \
    switch -exact -- $c0 \
    {
       "!last" { comm_last $lc 1 }
+      "!chcon" { comm_chcon $lc }
    }
 }
 
@@ -226,6 +234,14 @@ proc comm_last { line fase } \
    }   
 }
 
+proc comm_chcon { line } \
+{
+   upvar #0 nc2nl c2l   nl2nc l2c   al2nc a2c
+
+   set items [ split $line " " ]
+   lassign $items - nc nl al
+   set_contact $nc $nl $al c2l l2c a2c
+}
 
 set last 0
 set arg ""
