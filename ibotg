@@ -236,11 +236,13 @@ proc comm_last { line fase } \
 
 proc comm_chcon { line } \
 {
-   upvar #0 nc2nl c2l   nl2nc l2c   al2nc a2c
+   upvar #0 nc2nl c2l   nl2nc l2c   al2nc a2c   irc i   co c
 
    set items [ split $line " " ]
    lassign $items - nc nl al
+   if ![ info exists c2l($nc) ] return
    set_contact $nc $nl $al c2l l2c a2c
+   picoirc::post $i($c(root)) $c(master) "Changed: $nc $nl $al"
 }
 
 set last 0
