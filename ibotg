@@ -47,7 +47,7 @@ proc leer_conf { co } \
    }
 }
 
-proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales media } \
+proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales } \
 {
    upvar 1 $ch2gr c2g  $gr2ch g2c  $nc2nl c2l  $nl2nc l2c  $al2nc a2c  $canales chans
 
@@ -234,8 +234,8 @@ array set mpend {}
 
 leer_conf co
 
-leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc al2nc canales $co(media)
-leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc al2nc canales $co(media)
+leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc al2nc canales
+leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc al2nc canales
 
 if { $co(convert_emoji) } { source emoji2emoticon.tcl }
 
