@@ -26,7 +26,7 @@
 
 package require picoirc
 
-proc ::picoirc::Version {context} { upvar #0 ncirc ni  nc2nl nl; return $nl($ni($context)) }
+proc ::picoirc::Version {context} { return ibotg }
 
 proc leer_conf { co } \
 {
@@ -47,9 +47,9 @@ proc leer_conf { co } \
    }
 }
 
-proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales } \
+proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc nc2al canales } \
 {
-   upvar 1 $ch2gr c2g  $gr2ch g2c  $nc2nl c2l  $nl2nc l2c  $al2nc a2c  $canales chans
+   upvar 1 $ch2gr c2g  $gr2ch g2c  $nc2nl c2l  $nl2nc l2c  $al2nc a2c  $nc2al c2a  $canales chans
 
    # nc2nl -> array de nick corto a nick largo
    # nl2nl -> array de nick largo a nick corto
@@ -57,6 +57,7 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales } \
    # ch2gr -> array de canal en IRC a grupo en Telegram
    # gr2ch -> array de grupo en Telegram a canal en IRC
    # al2nc -> array de alias en Telegram a nick corto
+   # nc2al -> array de nick corto a alias en Telegram
 
    set li [ open $flista ]
    while { [ gets $li lin ] >= 0 } \
@@ -66,7 +67,7 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales } \
       if { $ch == 0 } \
       {
         lassign $data nc nl al grupos
-        set_contact $nc $nl $al c2l l2c a2c
+        set_contact $nc $nl $al c2l l2c a2c c2a
         if { $grupos!="" } { set chans($nc) [ split $grupos , ] }
       } \
       else \
@@ -78,13 +79,14 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nl2nc al2nc canales } \
    }
 }
 
-proc set_contact { nc nl al nc2nl nl2nc al2nc } \
+proc set_contact { nc nl al nc2nl nl2nc al2nc nc2al } \
 {
-   upvar 1 $nc2nl c2l  $nl2nc l2c  $al2nc a2c
+   upvar 1 $nc2nl c2l  $nl2nc l2c  $al2nc a2c  $nc2al c2a
 
    set c2l($nc) $nl
    set l2c($nl) $nc
    set a2c($al) ~$nc~
+   set c2a($nc) $al
 }
 
 proc parse { string hora to from mensaje tg_name tg_echo base media } \
@@ -204,6 +206,7 @@ proc command { com } \
    {
       "!last" { comm_last $lc 1 }
       "!chcon" { comm_chcon $lc }
+      "!list" comm_list
    }
 }
 
@@ -236,13 +239,28 @@ proc comm_last { line fase } \
 
 proc comm_chcon { line } \
 {
-   upvar #0 nc2nl c2l   nl2nc l2c   al2nc a2c   irc i   co c
+   upvar #0 nc2nl c2l  nl2nc l2c  al2nc a2c  nc2al c2a  irc i  co c
 
    set items [ split $line " " ]
    lassign $items - nc nl al
    if ![ info exists c2l($nc) ] return
-   set_contact $nc $nl $al c2l l2c a2c
+   set_contact $nc $nl $al c2l l2c a2c c2a
    picoirc::post $i($c(root)) $c(master) "Changed: $nc $nl $al"
+}
+
+proc comm_list { } \
+{
+   upvar #0 nc2nl c2l   nc2al c2a   irc i   co cf
+
+   picoirc::post $i($cf(root)) $cf(master) "IRCNICK   TELEGRAM_NAME        ALIAS"
+   foreach { c l } [ array get c2l ] \
+   {
+      if { $l != "" && $l != $cf(media) } \
+      {
+         after $cf(delay_line)
+         picoirc::post $i($cf(root)) $cf(master) [ format "%-9s %-20s %-20s" $c $l $c2a($c) ]
+      }
+   }
 }
 
 set last 0
@@ -252,8 +270,8 @@ array set mpend {}
 
 leer_conf co
 
-leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc al2nc canales
-leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc al2nc canales
+leer_lista $co(contact_file) 0 ch2gr gr2ch nc2nl nl2nc al2nc nc2al canales
+leer_lista $co(channel_file) 1 ch2gr gr2ch nc2nl nl2nc al2nc nc2al canales
 
 if { $co(convert_emoji) } { source emoji2emoticon.tcl }
 

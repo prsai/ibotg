@@ -143,7 +143,7 @@ commands to telegram-cli, I suggest you keep the root user in a separated
 window in your IRC client.
 
 Some special commands can be sent to this control user (root) prefixed with
-exclamation mark (!). At the moment only two commands are available:
+exclamation mark (!). At the moment the following commands are available:
 
     !last <user|channel>
 
@@ -162,6 +162,11 @@ with chcon, similarly the username/alias affects the conversion from
 @username to ~irnick~ forms. You must update the contact list file with the
 new telegram_name and/or username of the contact as well because the changes
 made with chcon will not be persistent if ibotg is restarted.
+
+    !list
+
+Will show the list of the live contacts that ibotg keeps, including the
+changes made by "!chcon" command in runtime.
 
 Media support
 -------------
