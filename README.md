@@ -153,15 +153,17 @@ reset the unread message count with telegram-cli command "`mark_read
 <contact|channel>`". This only works if you use the forked version of 
 telegram-cli as said above.
 
-    !chcon <ircnick> <telegram_name> <username>
+    !chcon <ircnick> <telegram_name> [username|-]
 
 For the contact refered by ircnick, change the telegram_name and
-username/alias. This is usefull when some contact changes its name in
-Telegram, it will be shown in ibotg as unknown until you set the new name
-with chcon, similarly the username/alias affects the conversion from
-@username to ~irnick~ forms. You must update the contact list file with the
-new telegram_name and/or username of the contact as well because the changes
-made with chcon will not be persistent if ibotg is restarted.
+username/alias. If you omit the username it will be set to empty, if you set
+"-" it will be left unchanged with the previous value that already had.  
+This is usefull when some contact changes its name in Telegram, it will be
+shown in ibotg as unknown until you set the new name with chcon, similarly
+the username/alias affects the conversion from @username to ~irnick~ forms.
+You must update the contact list file with the new telegram_name and/or
+username of the contact as well because the changes made with chcon will not
+be persistent if ibotg is restarted.
 
     !list
 

@@ -85,6 +85,7 @@ proc set_contact { nc nl al nc2nl nl2nc al2nc nc2al } \
 
    set c2l($nc) $nl
    set l2c($nl) $nc
+   if { $al == "-" } return
    set a2c($al) ~$nc~
    set c2a($nc) $al
 }
@@ -245,7 +246,7 @@ proc comm_chcon { line } \
    lassign $items - nc nl al
    if ![ info exists c2l($nc) ] return
    set_contact $nc $nl $al c2l l2c a2c c2a
-   picoirc::post $i($c(root)) $c(master) "Changed: $nc $nl $al"
+   picoirc::post $i($c(root)) $c(master) "Changed: $nc $c2l($nc) $c2a($nc)"
 }
 
 proc comm_list { } \
