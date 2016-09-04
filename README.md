@@ -26,8 +26,9 @@ Requirements
 -------------
 
 * Tcl with picoirc library.
-* telegram-cli with an account configured (optionally from my fork to use
-  history function, see "Telegram-cli with history callbacks" section)
+* telegram-cli with an account configured (optionally from [my
+  fork](https://github.com/prsai/tg) to use history function, see
+  "Telegram-cli with history callbacks" section)
 * An IRC server, private recommended but can be public if it allows the
   requeriments of ibotg (see Notes section)
 * An IRC client.
@@ -140,7 +141,7 @@ target from private messages.
 A control user (configured as root user in tribute to bitlbee) will send the
 non-message output from telegram-cli to master user and will forward
 commands to telegram-cli, I suggest you keep the root user in a separated
-window in your IRC client.
+window query in your IRC client.
 
 Commands
 --------
@@ -236,7 +237,8 @@ Notes
   the bot can collide with existing ones on IRC and/or can be registered by
   other users (at the moment ibotg doesn't support nick bots like
   "NickServ"), finally public servers can arise some privacy concerns; for
-  all these reasons I recommend running your own private IRC server.
+  all these reasons I recommend running your own private IRC server, ibotg
+  has been heavily tested with [ngircd](http://ngircd.barton.de).
 
 * Initial pending messages are causing some problems to ibotg so they are
   disabled by default, instead I recommend you use history command from
@@ -247,9 +249,9 @@ Notes
 ToDo
 ----
 
-* Make contact list dynamic/live.
+* Make contact list dynamic/live [partially done].
 
-* Address some synchronization problems.
+* Address some synchronization problems [not experienced for some time].
 
 Contact
 -------
