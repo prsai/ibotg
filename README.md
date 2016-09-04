@@ -242,9 +242,9 @@ Notes
 
 * Initial pending messages are causing some problems to ibotg so they are
   disabled by default, instead I recommend you use history command from
-  telegram-cli (works only with an optional patch supplied, see Patching
-  section). If you want to enable them at your own risk set PENDING_MSGS=1
-  in "tg" file.
+  telegram-cli (using [my fork](https://github.com/prsai/tg), see
+  "Telegram-cli with history callbacks" section). If you want to enable them
+  at your own risk set PENDING_MSGS=1 in "tg" file.
 
 ToDo
 ----
