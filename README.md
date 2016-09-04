@@ -142,7 +142,10 @@ non-message output from telegram-cli to master user and will forward
 commands to telegram-cli, I suggest you keep the root user in a separated
 window in your IRC client.
 
-Some special commands can be sent to this control user (root) prefixed with
+Commands
+--------
+
+Some special commands can be sent to the control user (root) prefixed with
 exclamation mark (!). At the moment the following commands are available:
 
     !last <user|channel>
@@ -169,6 +172,35 @@ be persistent if ibotg is restarted.
 
 Will show the list of the live contacts that ibotg keeps, including the
 changes made by "!chcon" command in runtime.
+
+Shortcuts
+---------
+
+When sending commands to telegram-cli via the control user (root), when you
+have to refer to a contact you normally use its telegram_name, now you can
+use shortcuts for convenience with the follow syntax:
+
+    command !<ircnick>
+
+For example:
+
+    user_info !prsai
+
+Suposing that the contact with ircnick "prsai" has telegram_name
+"John_Wayne", ibotg will convert the previous command to:
+
+    user_info John_Wayne
+
+As telegram-cli needs the telegram_name.
+
+Similary, in a channel, you can refer to a contact with the following
+syntax:
+
+    !<ircnick>:
+
+ibotg will convert this to the alias/username of the contact with the
+ircnick refered, in the form @alias. In telegram this will notify the user
+mentioned.
 
 Media support
 -------------
