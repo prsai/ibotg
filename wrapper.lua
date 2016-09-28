@@ -52,10 +52,13 @@ function on_binlog_replay_end ()
 end
 
 function ok_load(mid, success, result)
-  local sep = "\x1E"
-  local text = "[ERROR]"
-  if success then text = result end
-  print("3kdy5F"..sep..mid..sep..sep..sep..sep..sep..text)
+  local sep,text,err = "\x1E","",""
+  if success and (type(result)=="string") then
+    text = result
+  else
+    err = "1"
+  end
+  print("3kdy5F"..sep..mid..sep..err..sep..sep..sep..sep..text)
 end
 
 function partir(x)

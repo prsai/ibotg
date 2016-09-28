@@ -100,12 +100,13 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
    upvar 1 $hora ho   $to t   $from f   $mensaje msg
 
    set items [ split $string "\x1E" ]
-   lassign $items id mi hi ho f t msg
+   lassign $items id mi hioer ho f t msg
    if { $id!="9ZxtQy" } \
    {
       if { $id=="3kdy5F" } \
       {
-         append url $base [ string range $msg [ string last / $msg ] end ]
+         if { $hioer=="1" } { append url {[ERROR]} } \
+         else { append url $base [ string range $msg [ string last / $msg ] end ] }
          if { [ info exists pend($mi) ] } \
          {
             lassign $pend($mi) f t m
@@ -124,8 +125,8 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
       if { [ regexp -lineanchor {^\s*\[[^]]+\] .*$} $string ] } { return 2 } \
       else { return 0 }
    }
-   if { $f==$tg_name && !$hi && !$tg_echo } { return 0 }
-   if { $mi>0 && !$hi } { set pend($mi) [ list $f $t $msg ]; return 2 }
+   if { $f==$tg_name && !$hioer && !$tg_echo } { return 0 }
+   if { $mi>0 && !$hioer } { set pend($mi) [ list $f $t $msg ]; return 2 }
    if { [ string index $msg 0 ] == "/" } { append me " " $msg; set msg $me } 
    return 1
 }
