@@ -59,7 +59,8 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nci2nl nl2nc al2nc nc2al ncic2al c
    # gr2ch -> array de grupo en Telegram a canal en IRC
    # al2nc -> array de alias en Telegram a nick corto
    # nc2al -> array de nick corto a alias en Telegram
-   # ncic2al -> array de nick corto (con prefijo interrogante y sufijo dos puntos) a alias en Telegram
+   # ncic2al -> array de nick corto (con prefijo interrogante y sufijo dos puntos) a alias en Telegram (tambien envueltos
+   # entre <>)
 
    set li [ open $flista ]
    while { [ gets $li lin ] >= 0 } \
@@ -92,6 +93,7 @@ proc set_contact { nc nl al nc2nl nci2nl nl2nc al2nc nc2al ncic2al } \
    set a2c($al) ~$nc~
    set c2a($nc) $al
    set cic2a(!$nc:) $al
+   set cic2a(<$nc>) <$al>
 }
 
 proc parse { string hora to from mensaje tg_name tg_echo base media } \
