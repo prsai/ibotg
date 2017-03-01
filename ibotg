@@ -199,12 +199,10 @@ proc irc2tg { irc estado args } \
                } \
                elseif { $target==$r00t } \
                {
+                  set mensaje [ string map [ array get ci2l ] $mensaje ]
+                  set mensaje [ string map [ array get c2g ] $mensaje ]
                   if { [ string index $mensaje 0 ] == "!" } { command $mensaje } \
-                  else \
-                  {
-                     set mensaje [ string map [ array get ci2l ] $mensaje ]
-                     puts $tp $mensaje
-                  }
+                  else { puts $tp $mensaje }
                }
             } \
             elseif { $nci($irc)==$target } { puts $tp "msg $c2l($target) $mensaje" }	
@@ -238,17 +236,12 @@ proc comm_last { line fase } \
    } \
    elseif { $fase==2 } \
    {
-      if { [ info exists c2l($ar) ] } \
-      {
-         set arl_ $c2l($ar)
-         set arl [ string map { _ " " } $arl_ ]
-      } \
-      else { set arl_ [ set arl $ar ] }         
-      if { [ regexp -lineanchor "^(Chat|User) $arl: (\[0-9\]+) unread$" $line - -> msgs ] } \
+      set ars [ string map { _ " " } $ar ]
+      if { [ regexp -lineanchor "^(Chat|User) $ars: (\[0-9\]+) unread$" $line - -> msgs ] } \
       {
          set lt 0
          set msgs [ expr $msgs + $add ]
-         puts $tp "history $arl_ $msgs"
+         puts $tp "history $ar $msgs"
       }
    }   
 }
