@@ -19,7 +19,12 @@ master=prsai
 # Your name on Telegram (spaces replaced by underscore "_")
 tg_name=John_Wayne
 
-# 1: see echo when you send messages, 0: hide echo (will be shown only from root)
+# 1: see telegram-cli internal output in IRC via root user, 0: disable it (in
+# this case the results of commands sent to telegram-cli won't be shown)
+tg_verbose=1
+
+# 1: see echo when you send messages, 0: hide echo (will be shown only from
+# root if tg_verbose=1)
 tg_echo=0
 
 # script that launches telegram-cli
