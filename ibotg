@@ -26,9 +26,9 @@
 
 package require picoirc
 
-proc ::picoirc::Version {context} { return ibotg }
+proc ::picoirc::Version context { return ibotg }
 
-proc leer_conf { co } \
+proc leer_conf co \
 {
    upvar #0 argv arg   argc argn
    upvar 1 $co conf
@@ -40,7 +40,7 @@ proc leer_conf { co } \
    set cf [ open $config ]
    while { [ gets $cf lin ] >= 0 } \
    {
-      if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
+      if { [ string range [ string trim $lin ] 0 0 ] == "#" } continue
       set lconf [ split $lin = ]
       lassign $lconf key val
       set conf([ string trim $key]) [ string trim $val ]
@@ -65,7 +65,7 @@ proc leer_lista { flista ch ch2gr gr2ch nc2nl nci2nl nl2nc al2nc nc2al ncic2al c
    set li [ open $flista ]
    while { [ gets $li lin ] >= 0 } \
    {
-      if { [ string range [ string trim $lin ] 0 0 ] == "#" } { continue }
+      if { [ string range [ string trim $lin ] 0 0 ] == "#" } continue
       set data [ split $lin : ]
       if { $ch == 0 } \
       {
@@ -167,7 +167,7 @@ proc irc2tg { irc estado args } \
 
    switch -exact -- $estado \
    {
-      "debug" \
+      debug \
       {
          lassign $args tipo mensaje
          if { $noj($irc) && \
@@ -179,7 +179,7 @@ proc irc2tg { irc estado args } \
                set noj($irc) 0
             }
       }
-      "chat" \
+      chat \
       {
          lassign $args target sender mensaje tipo
 
@@ -208,11 +208,11 @@ proc irc2tg { irc estado args } \
             elseif { $nci($irc)==$target } { puts $tp "msg $c2l($target) $mensaje" }	
          }
       }
-      "close" { exit }
+      close exit
    }
 }
 
-proc command { com } \
+proc command com \
 {
    set lc [ split $com ]
    set c0 [ lindex $lc 0 ]
@@ -246,18 +246,18 @@ proc comm_last { line fase } \
    }   
 }
 
-proc comm_chcon { line } \
+proc comm_chcon line \
 {
    upvar #0 nc2nl c2l  nci2nl ci2l  nl2nc l2c  al2nc a2c  nc2al c2a  ncic2al cic2a  irc i  co c
 
    set items [ split $line " " ]
    lassign $items - nc nl al
-   if ![ info exists c2l($nc) ] return
+   if { ![ info exists c2l($nc) ] } return
    set_contact $nc $nl $al c2l ci2l l2c a2c c2a cic2a
    picoirc::post $i($c(root)) $c(master) "Changed: $nc $c2l($nc) $c2a($nc)"
 }
 
-proc comm_list { } \
+proc comm_list {} \
 {
    upvar #0 nc2nl c2l   nc2al c2a   irc i   co cf
 
