@@ -89,11 +89,15 @@ proc set_contact { nc nl al nc2nl nci2nl nl2nc al2nc nc2al ncic2al } \
    set c2l($nc) $nl
    set ci2l(!$nc) $nl
    set l2c($nl) $nc
-   if { $al == "-" } return
-   set a2c($al) ~$nc~
    set c2a($nc) $al
-   set cic2a(!$nc:) $al
-   set cic2a(<$nc>) <$al>
+   if { $al == "" } { set x $nl } \
+   else \
+   {
+      set x $al
+      set a2c($al) ~$nc~
+   }
+   set cic2a(!$nc:) $x
+   set cic2a(<$nc>) <$x>
 }
 
 proc parse { string hora to from mensaje tg_name tg_echo base media } \
