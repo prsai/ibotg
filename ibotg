@@ -155,9 +155,13 @@ proc tg2irc { tg ir nl2nc gr2ch al2nc emoji master root tg_name tg_echo delay ba
          set mensaje [ string map [ array get a2c ] $mensaje ]
          set mensaje [ string map [ array get emo ] $mensaje ]
          if { [ array get g2c $to ] != "" } { set target $g2c($to) } \
-         else { set target $master }
+         else \
+         {
+           if { $to != $tg_name && ![ info exists l2c($to) ] } { append mes {[T:} $to {] } $mensaje; set mensaje $mes }
+           set target $master
+         }
          if { [ info exists l2c($from) ] } { set usu $l2c($from) } \
-         else { set usu unknown; append me {[} $from {] } $mensaje; set mensaje $me }
+         else { set usu unknown; append me {[F:} $from {] } $mensaje; set mensaje $me }
          picoirc::post $irc($usu) $target $mensaje
       } \
       elseif { $res==0 && $tg_verbose } { picoirc::post $irc($root) $master [ string range $linea 0 400 ] }
