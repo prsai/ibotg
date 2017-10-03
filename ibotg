@@ -89,6 +89,7 @@ proc set_contact { nc nl al nc2nl nci2nl nl2nc al2nc nc2al ncic2al } \
    set c2l($nc) $nl
    set ci2l(!$nc) $nl
    set l2c($nl) $nc
+   if { $al == "-" } return
    set c2a($nc) $al
    if { $al == "" } { set x $nl } \
    else \
