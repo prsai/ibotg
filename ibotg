@@ -268,7 +268,7 @@ proc comm_chcon line \
 
 proc comm_list {} \
 {
-   upvar #0 nc2nl c2l   nc2al c2a   irc i   co cf
+   upvar #0 nc2nl c2l   nc2al c2a   irc i   co cf   ch2gr c2g
 
    picoirc::post $i($cf(root)) $cf(master) "IRCNICK   TELEGRAM_NAME        ALIAS"
    foreach { c l } [ array get c2l ] \
@@ -278,6 +278,12 @@ proc comm_list {} \
          after $cf(delay_line)
          picoirc::post $i($cf(root)) $cf(master) [ format "%-9s %-20s %-20s" $c $l $c2a($c) ]
       }
+   }
+   picoirc::post $i($cf(root)) $cf(master) "IRC_CHANNEL      TELEGRAM_GROUP"
+   foreach { ch g } [ array get c2g ] \
+   {
+      after $cf(delay_line)
+      picoirc::post $i($cf(root)) $cf(master) [ format "%-16s %-60s" $ch $g ]
    }
 }
 
