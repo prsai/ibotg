@@ -210,7 +210,8 @@ proc irc2tg { irc estado args } \
                {
                   set mensaje [ string map [ array get ci2l ] $mensaje ]
                   set mensaje [ string map [ array get c2g ] $mensaje ]
-                  if { [ string index $mensaje 0 ] == "!" } { command $mensaje } \
+                  set menstrl [ string trimleft $mensaje ]
+                  if { [ string index $menstrl 0 ] == "!" } { command $menstrl } \
                   else { puts $tp $mensaje }
                }
             } \
@@ -223,7 +224,7 @@ proc irc2tg { irc estado args } \
 
 proc command com \
 {
-   set lc [ split $com ]
+   set lc [ split [ supertrim $com ] ]
    set c0 [ lindex $lc 0 ]
    switch -exact -- $c0 \
    {
@@ -255,11 +256,10 @@ proc comm_last { line fase } \
    }   
 }
 
-proc comm_chcon line \
+proc comm_chcon items \
 {
    upvar #0 nc2nl c2l  nci2nl ci2l  nl2nc l2c  al2nc a2c  nc2al c2a  ncic2al cic2a  irc i  co c
 
-   set items [ split $line " " ]
    lassign $items - nc nl al
    if { ![ info exists c2l($nc) ] } return
    set_contact $nc $nl $al c2l ci2l l2c a2c c2a cic2a
@@ -286,6 +286,8 @@ proc comm_list {} \
       picoirc::post $i($cf(root)) $cf(master) [ format "%-16s %-60s" $ch $g ]
    }
 }
+
+proc supertrim str { return [ regsub -all { {2,}} $str { } ] }
 
 set last 0
 set arg ""
