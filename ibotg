@@ -106,7 +106,7 @@ proc parse { string hora to from mensaje tg_name tg_echo base media } \
    upvar #0 last lt   mpend pend
    upvar 1 $hora ho   $to t   $from f   $mensaje msg
 
-   set items [ split $string "\x1E" ]
+   set items [ split $string \x1E ]
    lassign $items id mi hioer ho f t msg
    if { $id!="9ZxtQy" } \
    {
@@ -228,9 +228,9 @@ proc command com \
    set c0 [ lindex $lc 0 ]
    switch -exact -- $c0 \
    {
-      "!last" { comm_last $lc 1 }
-      "!chcon" { comm_chcon $lc }
-      "!list" comm_list
+      !last { comm_last $lc 1 }
+      !chcon { comm_chcon $lc }
+      !list comm_list
    }
 }
 
@@ -303,7 +303,7 @@ if { $co(convert_emoji) } { source emoji2emoticon.tcl }
 
 foreach ni [ array names nc2nl ] \
 {
-   set irc($ni) [ picoirc::connect irc2tg $ni $co(pass) "irc://$co(serv):$co(port)" ] 
+   set irc($ni) [ picoirc::connect irc2tg $ni $co(pass) irc://$co(serv):$co(port) ]
    set ncirc($irc($ni)) $ni
    set njd($irc($ni)) [ info exists canales($ni) ]
    after $co(delay_join)
