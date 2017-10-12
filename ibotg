@@ -230,6 +230,7 @@ proc command com \
    {
       !last { comm_last $lc 1 }
       !chcon { comm_chcon $lc }
+      !chgrp { comm_chgrp $lc }
       !list comm_list
    }
 }
@@ -266,6 +267,20 @@ proc comm_chcon items \
    if { $al != "-" } { unset a2c($c2a($nc)) }
    set_contact $nc $nl $al c2l ci2l l2c a2c c2a cic2a
    picoirc::post $i($c(root)) $c(master) "Changed: $nc $c2l($nc) $c2a($nc)"
+}
+
+proc comm_chgrp items \
+{
+   upvar #0 ch2gr c2g  gr2ch g2c  irc i  co c
+
+   lassign $items - ch gr
+   if { $gr == "" } return
+   if { [ info exists g2c($ch) ] } { set ch $g2c($ch) } ;# Revert possible previous substitution ( ch -> gr )
+   if { ![ info exists c2g($ch) ] } return
+   unset g2c($c2g($ch))
+   set c2g($ch) $gr
+   set g2c($gr) $ch
+   picoirc::post $i($c(root)) $c(master) "Changed: $ch $c2g($ch)"
 }
 
 proc comm_list {} \
