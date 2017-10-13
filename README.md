@@ -169,6 +169,16 @@ You must update the contact list file with the new telegram_name and/or
 username of the contact as well because the changes made with chcon will not
 be persistent if ibotg is restarted.
 
+    !chgrp <#channel> <telegram_group>
+
+For the channel refered (usually starting with #) change the group on
+Telegram that is linked with. Like with !chcon, the changes made are not
+persistent so you should update the channel list file.
+
+!chcon and !chgrp commands are useful when the name of contacts or groups
+on Telegram change, you can change them in ibotg in runtime to make it
+work properly.
+
     !list
 
 Will show the list of the live contacts that ibotg keeps, including the
