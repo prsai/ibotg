@@ -28,6 +28,8 @@ package require picoirc
 
 proc ::picoirc::Version context { return ibotg }
 
+proc reescape s { regsub -all -- {[][#$^*()+{}\|.?-]} $s {\\\0} s; return $s }
+
 proc leer_conf co \
 {
    upvar #0 argv arg   argc argn
@@ -248,7 +250,7 @@ proc comm_last { line fase } \
    elseif { $fase==2 } \
    {
       set ars [ string map { _ " " } $ar ]
-      if { [ regexp -lineanchor "^(Chat|User) $ars: (\[0-9\]+) unread$" $line - -> msgs ] } \
+      if { [ regexp -lineanchor "^(Chat|User) [ reescape $ars ]: (\[0-9\]+) unread$" $line - -> msgs ] } \
       {
          set lt 0
          set msgs [ expr $msgs + $add ]
