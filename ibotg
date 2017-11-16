@@ -266,7 +266,7 @@ proc comm_chcon items \
    lassign $items - nc nl al
    if { ![ info exists c2l($nc) ] } return
    unset l2c($c2l($nc))
-   if { $al != "-" } { unset a2c($c2a($nc)) }
+   if { $al != "-" && $c2a($nc) != "" } { unset a2c($c2a($nc)) }
    set_contact $nc $nl $al c2l ci2l l2c a2c c2a cic2a
    picoirc::post $i($c(root)) $c(master) "Changed: $nc $c2l($nc) $c2a($nc)"
 }
