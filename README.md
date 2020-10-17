@@ -4,6 +4,8 @@ ibotg
 
 IRC bot to Telegram: a bot that allows using Telegram from IRC
 
+**[ Note: this project is not longer maintained ]**
+
 **[ Media branch is stable and is the default ]**
 
 Description
